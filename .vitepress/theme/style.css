@@ -1,0 +1,27 @@
+/**
+ * Customize default theme styling by overriding CSS variables:
+ * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
+ */
+
+:root {
+  --vp-c-brand-1: #c89568;
+  --vp-c-brand-2: #e4ba8a;
+  --vp-c-brand-3: #f4d3b9;
+  --vp-c-brand-soft: rgba(234, 185, 106, 0.14);
+}
+
+/**
+ * Component: Code
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-code-copy-copied-text-content: '已复制';
+}
+
+/**
+ * Component: Button
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+}
