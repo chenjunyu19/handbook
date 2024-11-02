@@ -14,7 +14,8 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
     {
       text: '零散页面',
       items: [
-        { text: '概览', link: '/' }
+        { text: '概览', link: '/' },
+        { text: '8051 开发环境（C51 汇编）', link: '/mcu-8051-dev-c51' }
       ]
     }
   ];
