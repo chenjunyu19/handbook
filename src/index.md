@@ -5,6 +5,10 @@ hero:
   name: 冒险手册
   text: 某只「旅行者·空」<br>的笔记本
   tagline: 记录旅途中的所闻所想
+  actions:
+    - theme: brand
+      text: 浏览页面
+      link: /pages/
 
 features:
   - icon: 📝
