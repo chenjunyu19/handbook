@@ -25,6 +25,10 @@ export default defineConfig({
       { text: '页面', link: '/pages/', activeMatch: '^/pages/' }
     ],
     sidebar: sidebar(),
+    editLink: {
+      pattern: 'https://github.com/chenjunyu19/handbook/blob/main/src/:path',
+      text: '在 GitHub 上查看此页面'
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/chenjunyu19/handbook' }
     ],
