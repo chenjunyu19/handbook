@@ -23,6 +23,12 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/chenjunyu19/handbook' }
     ],
     externalLinkIcon: true,
+    notFound: {
+      title: '页面未找到',
+      quote: '页面可能被移动或删除了，但你可以继续在本站寻找。',
+      linkLabel: '前往首页',
+      linkText: '前往首页',
+    },
     ...themeConfigZhMessages()
   }
 });
