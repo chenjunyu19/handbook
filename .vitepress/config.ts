@@ -1,5 +1,7 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 
+import sidebar from './sidebar';
+
 // https://vitepress.dev/zh/reference/site-config
 export default defineConfig({
   title: "冒险手册",
@@ -19,6 +21,10 @@ export default defineConfig({
   },
   // https://vitepress.dev/zh/reference/default-theme-config
   themeConfig: {
+    nav: [
+      { text: '页面', link: '/pages/', activeMatch: '^/pages/' }
+    ],
+    sidebar: sidebar(),
     socialLinks: [
       { icon: 'github', link: 'https://github.com/chenjunyu19/handbook' }
     ],
