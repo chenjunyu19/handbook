@@ -14,7 +14,7 @@
 gcc -pipe -Wpedantic -Wall -Wextra -g -Og -flto=auto -fsanitize=address,undefined
 ```
 
-如果使用构建工具，需要将这些参数传递到构建系统里，比如设置 `CFLAGS`、`CXXFLAGS`、`LDFLAGS` 环境变量。
+如果使用构建工具，需要将这些参数传递到构建系统里，比如设置 `CFLAGS`、`CXXFLAGS` 和 `LDFLAGS` 环境变量。
 
 ## 编译时检查
 
@@ -35,11 +35,15 @@ gcc -pipe -Wpedantic -Wall -Wextra -g -Og -flto=auto -fsanitize=address,undefine
 
 > [!NOTE]
 >
-> 撰写此部分时 GCC 最新版本为 14.2.1，Clang 最新版本为 18.1.8。
+> 撰写此部分时 GCC 版本为 14.2.1，Clang 版本为 18.1.8。
+
+> [!CAUTION]
+>
+> 使用 Sanitizer 会使程序性能下降，应当只将其应用于调试。
 
 Google 做了一些叫 Sanitizer 的东西，能够在运行时检查出程序的问题。这些东西现在已经转移到 LLVM 项目中，因此在 Clang 中拥有最完整的体验（功能），但在别的编译器中也有部分实现。
 
-以大家比较常用的 GCC 为例，在撰写本文时，GCC 实现了 AddressSanitizer、ThreadSanitizer 和 UndefinedBehaviorSanitizer，分别用于运行时检测内存错误、数据竞争和未定义行为。我认为其中比较实用且开箱即用的是 AddressSanitizer 和 UndefinedBehaviorSanitizer，可以通过 `-fsanitize=address,undefined` 启用他们。
+以大家比较常用的 GCC 为例，GCC 实现了 AddressSanitizer、ThreadSanitizer 和 UndefinedBehaviorSanitizer，分别用于运行时检测内存错误、数据竞争和未定义行为。我认为其中比较实用且开箱即用的是 AddressSanitizer 和 UndefinedBehaviorSanitizer，可以通过 `-fsanitize=address,undefined` 启用他们。
 
 为了在运行时报告错误时能提供更多有用的信息，建议添加 `-g` 和 `-Og` 参数。
 
@@ -49,7 +53,11 @@ Google 做了一些叫 Sanitizer 的东西，能够在运行时检查出程序�
 
 > [!IMPORTANT]
 >
-> 在撰写本文时，GCC 在 Windows 上（即 MinGW-w64）还不支持 Sanitizer。而 MSVC 只实现了 AddressSanitizer。
+> GCC 在 Windows 上（即 MinGW-w64）还不支持 Sanitizer。而 MSVC 只实现了 AddressSanitizer。
+
+## 深入探索
+
+实在束手无策的时候，可以直接查看编译器的编译结果，不过这需要熟悉汇编语言和相应的平台特性。比较好用的一个在线工具是 [Compiler Explorer](https://godbolt.org/)。
 
 ## 另请参阅
 
