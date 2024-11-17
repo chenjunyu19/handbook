@@ -21,9 +21,9 @@ pnpm run build
 
 ## LICENSE
 
-以知识共享署名 4.0 协议国际版（CC BY 4.0）和 MIT 许可发布。可以通过 `LICENSES` 目录或下面的链接查看完整的许可信息。
+以知识共享署名 4.0 协议国际版（CC BY 4.0）和 MIT 许可发布。
 
-Released under the Creative Commons Attribution 4.0 International (CC BY 4.0) and the MIT License. Full licensing information can be found in the `LICENSES` directory or at the link below.
+Released under the Creative Commons Attribution 4.0 International (CC BY 4.0) and the MIT License.
 
 - <https://spdx.org/licenses/CC-BY-4.0.html>
 - <https://creativecommons.org/licenses/by/4.0/>
