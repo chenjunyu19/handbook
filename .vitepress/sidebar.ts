@@ -19,7 +19,8 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: '给你的 C/C++ 代码“消毒”', link: '/sanitize-your-c-cpp-code' },
         { text: '使用 skopeo 复制 Docker 镜像', link: '/skopeo-copy-images' },
         { text: '一些 Windows 注册表路径', link: '/windows-registry-paths' },
-        { text: '安装 VC++ 可再发行包', link: '/install-vcredist' }
+        { text: '安装 VC++ 可再发行包', link: '/install-vcredist' },
+        { text: 'MSYS2', link: '/msys2' },
       ]
     }
   ];
