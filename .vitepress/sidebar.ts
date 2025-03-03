@@ -21,6 +21,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: '一些 Windows 注册表路径', link: '/windows-registry-paths' },
         { text: '安装 VC++ 可再发行包', link: '/install-vcredist' },
         { text: 'MSYS2', link: '/msys2' },
+        { text: 'AVR 开发环境（GCC）', link: '/mcu-avr-dev-gcc' },
       ]
     }
   ];
