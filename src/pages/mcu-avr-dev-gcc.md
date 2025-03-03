@@ -8,12 +8,14 @@
 
 ## 工具安装
 
-在 [MSYS2](msys2.md) 中安装以下软件包。
+对于 Windows 平台，可以在 [MSYS2](msys2.md) 中安装以下软件包。
 
 - [make](https://packages.msys2.org/base/make)：构建工具
 - [mingw-w64-avr-gcc](https://packages.msys2.org/base/mingw-w64-avr-gcc)：工具链
 - [mingw-w64-avr-libc](https://packages.msys2.org/base/mingw-w64-avr-libc)：C 函数库
 - [mingw-w64-avrdude](https://packages.msys2.org/base/mingw-w64-avrdude)：烧录工具
+
+对于其他平台，寻找并安装对应名称的软件包即可。
 
 ## 参考资料
 
