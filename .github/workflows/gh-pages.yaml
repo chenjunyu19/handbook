@@ -27,6 +27,7 @@ jobs:
         with:
           node-version: lts/*
           cache: pnpm
+          cache-dependency-path: package.json
       - run: pnpm install
       - run: pnpm run build
       - uses: actions/upload-pages-artifact@v3
