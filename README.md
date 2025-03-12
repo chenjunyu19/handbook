@@ -2,6 +2,8 @@
 
 冒险手册——某只「旅行者·空」的笔记本。
 
+在某一天突然意识到自己已经经历过了太多，记忆也会随着时间而磨损，因此设立了这一亩三分地存放过去与未来。
+
 可以在 [GitHub Discussions](https://github.com/chenjunyu19/handbook/discussions) 与我联系、反馈或进行相关讨论。
 
 ## 开发与构建
