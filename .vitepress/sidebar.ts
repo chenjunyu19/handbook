@@ -23,6 +23,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: 'MSYS2', link: '/msys2' },
         { text: 'AVR 开发环境（GCC）', link: '/mcu-avr-dev-gcc' },
         { text: 'systemd 系统的“开机自启”', link: '/systemd-autostart' },
+        { text: '我的 Arch Linux 安装', link: '/my-arch-installation' },
       ]
     }
   ];
