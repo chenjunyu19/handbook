@@ -24,6 +24,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: 'AVR 开发环境（GCC）', link: '/mcu-avr-dev-gcc' },
         { text: 'systemd 系统的“开机自启”', link: '/systemd-autostart' },
         { text: '我的 Arch Linux 安装', link: '/my-arch-installation' },
+        { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
       ]
     }
   ];
