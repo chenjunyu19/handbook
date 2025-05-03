@@ -95,3 +95,7 @@ default.target
 [Install]
 WantedBy=default.target
 ```
+
+## 另请参阅
+
+[freedesktop.org 上的 `bootup(7)` 手册页](https://www.freedesktop.org/software/systemd/man/latest/bootup.html)
