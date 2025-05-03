@@ -70,10 +70,10 @@ Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch
 
 ### mkinitcpio
 
-编辑 `/mnt/etc/mkinitcpio.conf.d/hook-systemd-nocmdline.conf`，写入以下内容，使 mkinitcpio 默认使用基于 systemd 的初始化流程。请注意我移除了有关键盘布局和控制台的钩子，因为通常情况下它没有实用性。
+编辑 `/mnt/etc/mkinitcpio.conf.d/hook-systemd-nocmdline.conf`，写入以下内容，使 mkinitcpio 默认使用基于 systemd 的初始化流程。请注意我移除了有关键盘布局和控制台的钩子，因为通常情况下它没有实用性。另外我还添加了 `_optnocmdline=1`，它等效于在运行 `mkinitcpio` 时添加 `--no-cmdline` 选项，阻止生成初始化内存盘时从当前运行的系统中收集命令行参数。这是因为基于 systemd 的初始化内存盘会自动根据分区类型等信息选择根块，添加命令行参数指定它时不必要的。如果你希望添加命令行参数，则应当移除 `_optnocmdline=1` 并按照 `mkinitcpio` 的相关文档编写配置文件。
 
 ```shell
-HOOKS=(systemd autodetect microcode modconf kms block filesystems fsck)
+HOOKS=(base systemd autodetect microcode modconf kms block filesystems fsck)
 _optnocmdline=1
 ```
 
@@ -97,6 +97,30 @@ fallback_options="-S autodetect"
 ```shell
 mkdir -pv /mnt/efi/EFI/Linux
 ```
+
+::: details 不使用引导加载程序的配置
+
+可以直接将 UKI 生成在 UEFI 默认文件路径中，在无需写入 UEFI 变量、无需安装引导加载程序的情况下实现启动。这适用于整个磁盘上仅安装这一个操作系统的情况。注意后续不要安装任何引导加载器或其他操作系统，否则 UKI 可能会被覆盖。
+
+`linux.preset` 文件相应修改为以下内容。
+
+```shell
+# mkinitcpio preset file for the 'linux' package
+
+ALL_kver="/boot/vmlinuz-linux"
+
+PRESETS=('default')
+
+default_uki="/efi/EFI/BOOT/BOOTx64.EFI"
+```
+
+创建目标文件夹的命令。
+
+```shell
+mkdir -pv /mnt/efi/EFI/BOOT
+```
+
+:::
 
 ### Locale
 
@@ -133,6 +157,49 @@ cp -v /etc/systemd/network/*.network /mnt/etc/systemd/network/
 ln -sfv ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
 systemctl --root=/mnt enable systemd-{network,resolve,timesync}d.service
 ```
+
+::: details 替代的网络配置文件
+
+`80-wifi-station.network`
+
+```systemd
+[Match]
+Type=wlan
+WLANInterfaceType=station
+
+[Network]
+DHCP=yes
+MulticastDNS=true
+IPv6PrivacyExtensions=yes
+IgnoreCarrierLoss=3s
+
+[DHCPv4]
+RouteMetric=600
+
+[IPv6AcceptRA]
+RouteMetric=600
+```
+
+`89-ethernet.network`
+
+```systemd
+[Match]
+Type=ether
+Kind=!*
+
+[Network]
+DHCP=yes
+MulticastDNS=true
+IPv6PrivacyExtensions=yes
+
+[DHCPv4]
+RouteMetric=100
+
+[IPv6AcceptRA]
+RouteMetric=100
+```
+
+:::
 
 ### sudo
 
