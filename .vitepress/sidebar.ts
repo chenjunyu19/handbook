@@ -26,6 +26,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: '我的 Arch Linux 安装', link: '/my-arch-installation' },
         { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
         { text: '理解 UEFI 系统的引导', link: '/uefi-boot' },
+        { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
       ]
     }
   ];
