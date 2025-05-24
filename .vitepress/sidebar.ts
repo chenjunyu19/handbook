@@ -27,6 +27,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
         { text: '理解 UEFI 系统的引导', link: '/uefi-boot' },
         { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
+        { text: 'Arch Linux 自动系统更新', link: '/archlinux-auto-sysupgrade' },
       ]
     }
   ];
