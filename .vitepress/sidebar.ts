@@ -28,6 +28,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: '理解 UEFI 系统的引导', link: '/uefi-boot' },
         { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
         { text: 'Arch Linux 自动系统更新', link: '/archlinux-auto-sysupgrade' },
+        { text: 'PPPoE 宽带接入', link: '/pppoe' },
       ]
     }
   ];
