@@ -14,20 +14,11 @@ Arch Linux 没有官方的自动更新流程，因为用户有责任在进行系
 
 ### 配置 needrestart
 
-首先应确保已经安装了 needrestart 软件包，然后创建文件 `/etc/needrestart/conf.d/auto-restart.conf`，写入以下内容，实现自动重启服务。
-
-```perl
-# Restart mode: (l)ist only, (i)nteractive or (a)utomatically.
-#
-# ATTENTION: If needrestart is configured to run in interactive mode but is run
-# non-interactive (i.e. unattended-upgrades) it will fallback to list only mode.
-#
-$nrconf{restart} = 'a';
-```
+首先应确保已经安装了 needrestart 软件包，然后可以按需修改配置文件。需要注意的是，如果设置为自动重启服务，则需要将下面的自动更新服务忽略，否则 pacman 钩子的执行可能会导致自动更新被意外中断。
 
 ### 创建自动更新服务
 
-然后创建以下 systemd 服务，可以按需修改内容。它首先会执行系统更新，其中 needrestart 软件包中附带的 pacman 钩子会自动调用 `needrestart` 命令，然后会执行 `sync` 命令将缓存的写操作同步到磁盘中，最后会执行一段 Shell 命令，若内核有更新则会安排系统重启。可以考虑插入一行 `ExecStart=/usr/bin/pacman -Sc --noconfirm` 立即清理缓存。
+然后创建以下 systemd 服务，可以按需修改内容。它首先会执行系统更新，然后会执行 `sync` 命令将缓存的写操作同步到磁盘中，最后会执行一段 Shell 命令，若内核有更新则会安排系统重启，否则重启所有需要重启的服务。可以考虑插入一行 `ExecStart=/usr/bin/pacman -Sc --noconfirm` 立即清理缓存。
 
 ```shell
 systemctl edit --full --force auto-sysupgrade.service
@@ -42,7 +33,7 @@ After=network.target network-online.target nss-lookup.target
 Type=oneshot
 ExecStart=/usr/bin/pacman -Syu --noconfirm
 ExecStart=/usr/bin/sync
-ExecStart=/usr/bin/sh -c "if [[ -n $(needrestart -bk | grep 'NEEDRESTART-KSTA: [23]') ]]; then systemctl reboot --when=auto; fi"
+ExecStart=/usr/bin/sh -xc "if [[ -n $(needrestart -bk | grep 'NEEDRESTART-KSTA: [23]') ]]; then systemctl reboot --when=auto; else needrestart -r a; fi"
 IOSchedulingClass=idle
 ```
 
