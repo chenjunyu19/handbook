@@ -8,6 +8,12 @@
     "preview": "vitepress preview"
   },
   "devDependencies": {
-    "vitepress": "2.0.0-alpha.6"
+    "oxc-minify": "^0.75.1",
+    "vitepress": "2.0.0-alpha.8"
+  },
+  "pnpm": {
+    "overrides": {
+      "vite": "npm:rolldown-vite@latest"
+    }
   }
 }

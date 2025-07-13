@@ -40,6 +40,11 @@ export default defineConfig({
       linkText: '前往首页',
     },
     ...themeConfigZhMessages()
+  },
+  vite: {
+    experimental: {
+      enableNativePlugin: true
+    }
   }
 });
 
