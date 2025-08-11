@@ -8,8 +8,8 @@
     "preview": "vitepress preview"
   },
   "devDependencies": {
-    "oxc-minify": "^0.78.0",
-    "vitepress": "2.0.0-alpha.9"
+    "oxc-minify": "^0.81.0",
+    "vitepress": "2.0.0-alpha.10"
   },
   "pnpm": {
     "overrides": {
