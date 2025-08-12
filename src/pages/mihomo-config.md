@@ -279,3 +279,192 @@ rules:
   - GEOIP,cn,DIRECT
   - MATCH,PROXY
 ```
+
+## 附录
+
+### Geo 数据库
+
+GeoIP 一词狭义上是指 MaxMind 的商业产品 GeoIP，是一个 IP 地址和地理位置的关系的数据库。MaxMind 提供 GeoIP 数据的免费版本 GeoLite，下载得到的数据库格式是 `.mmdb`，这就是 `Country.mmdb` 文件的由来。
+
+GeoSite 则是一个类似的概念，是一个域名分类数据库。虽然它名字里带有 Geo，并且一般的用途也是区分站点的地理位置，但是它也不仅仅按照地理位置对域名进行分类。GeoSite 数据库的最初来源应该是 [v2fly/domain-list-community](https://github.com/v2fly/domain-list-community)，数据库文件扩展名是毫无意义的 `.dat`。
+
+「虚空终端」虽然也沿用了 GeoIP 和 GeoSite 这些数据库文件的用法，但其数据源已不是他们最初定义的来源了。「虚空终端」默认的 Geo 数据下载源是 [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)，其自述文件表明是在 [Loyalsoldier/v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat) 的基础上引入了新的数据源，而 v2ray-rules-dat 又是由多个数据源整合而来，所以从源头查询数据库内容并不合适。meta-rules-dat 中除了提供构建好的二进制数据库文件，还提供各个分类的纯文本列表，发布于 [`meta`](https://github.com/MetaCubeX/meta-rules-dat/tree/meta) 分支中，很适合用来查询最终用到的 Geo 数据库里的内容。
+
+为什么我的规则中包含几个特殊的 `@cn` 或 `-cn` 后缀的条目呢？因为部分站点从法律实体上看属于境外网站，即 `geolocation-!cn`，但是在境内解析他们时，又会得到境内的接入点。这些条目就是令这些特殊的站点直接连接到境内接入点，而不是通过代理连接到境外接入点。具体可以阅读 meta-rules-dat 和 v2ray-rules-dat 的自述文件。
+
+### 透明代理与 DNS 解析器
+
+在使用「虚空终端」时，如果是通过设置应用程序或操作系统，将「虚空终端」设为 HTTP 或 SOCKS 代理服务器，则是常规的代理模式，工作在「应用层」。若应用程序会主动使用这些设置，事情会比较简单，并且应用程序会直接将域名作为代理访问目标。
+
+但是，在某些特殊的情况下，比如无法设置应用程序使用代理服务器，或希望在局域网网关上进行代理，则会用到一种被称为透明代理的技术。透明代理工作在单台计算机内时，也被称为 TUN 模式、虚拟网卡模式，会在操作系统中创建一个 TUN 网络接口（设备），并可选地通过路由规则将大部分 IP 地址路由到该网络接口上，数据包最终会进入到「虚空终端」中。透明代理工作在网关时，通常会搭配 Linux 内核使用，通过内核的 netfilter 框架和 tproxy 模块，将 TCP/UDP 流量重定向到「虚空终端」的 tproxy 入站端口上。
+
+无论是通过 TUN 设备还是 tproxy 协议，「虚空终端」能够准确且可靠地获取到的信息最多只能到「传输层」，或者更确切地说是 TCP 和 UDP 数据包。为了使域名规则能够生效，必须要有一种方法，在建立新连接时能够知道该连接目的地的域名，而不是 IP。常用的一种方法是假 IP 技术，它会配合一个特殊的 DNS 服务器一起使用。另一种方法是嗅探器，它通过对常见协议（HTTP、TLS、QUIC）的常见端口上的数据进行模式匹配，提取出数据流在「应用层」中的域名信息，但是并不完全可靠和准确。
+
+#### 假 IP 模式
+
+假 IP 模式下的「虚空终端」DNS 服务器会对任意域名（实际上取决于具体配置）返回一个特定范围内的 IP 地址（通常是 `198.18.0.0/16`），并在程序内部维护一个域名—假 IP 的双射关系。这使得：一、客户端针对同一域名发起的请求总是为一个固定的假 IP；二、「虚空终端」从 TUN 接口上接收到数据包后可以直接将目的 IP 地址准确映射为目的域名来建立连接。
+
+你可能会注意到配置文件中有一项名为 `fake-ip-filter` 的配置，默认的黑名单模式下会使其中的域名的解析结果为真实 IP 而不是假 IP。但在撰写本部分时，「虚空终端」的逻辑会在启用了 DNS 组件并且不为 `DNSNormal` 模式时加载 IP 到域名的映射逻辑，自动将 IP 地址映射为其曾经被解析的域名，无论是否为假 IP。这其实是有问题的，因为真实网络中存在多个域名解析到同一 IP 的情况，在使用了边缘加速技术的站点上尤其常见。所以，在该逻辑没有被修改的情况下，使用假 IP 模式时应当尽可能不要在 `fake-ip-filter` 中填入内容，避免回落到 `DNSMapping` 模式的行为中。可能填上 `geosite:private` 就足够了。
+
+::: details 相关逻辑代码摘抄
+
+[`dns/enhancer.go#L17-L23 (5f1f296)`](https://github.com/MetaCubeX/mihomo/blob/5f1f296213550c34fb098e07e82e8463f6833e95/dns/enhancer.go#L17-L23)
+
+```go
+func (h *ResolverEnhancer) FakeIPEnabled() bool {
+	return h.mode == C.DNSFakeIP
+}
+
+
+func (h *ResolverEnhancer) MappingEnabled() bool {
+	return h.mode == C.DNSFakeIP || h.mode == C.DNSMapping
+}
+```
+
+[`dns/enhancer.go#L61-L75 (5f1f296)`](https://github.com/MetaCubeX/mihomo/blob/5f1f296213550c34fb098e07e82e8463f6833e95/dns/enhancer.go#L61-L75)
+
+```go
+func (h *ResolverEnhancer) FindHostByIP(ip netip.Addr) (string, bool) {
+	if pool := h.fakePool; pool != nil {
+		if host, existed := pool.LookBack(ip); existed {
+			return host, true
+		}
+	}
+
+
+	if mapping := h.mapping; mapping != nil {
+		if host, existed := h.mapping.Get(ip); existed {
+			return host, true
+		}
+	}
+
+
+	return "", false
+}
+```
+
+[`dns/enhancer.go#L106-L120 (5f1f296)`](https://github.com/MetaCubeX/mihomo/blob/5f1f296213550c34fb098e07e82e8463f6833e95/dns/enhancer.go#L106-L120)
+
+```go
+func NewEnhancer(cfg Config) *ResolverEnhancer {
+	var fakePool *fakeip.Pool
+	var mapping *lru.LruCache[netip.Addr, string]
+
+	if cfg.EnhancedMode != C.DNSNormal {
+		fakePool = cfg.Pool
+		mapping = lru.New(lru.WithSize[netip.Addr, string](4096))
+	}
+
+	return &ResolverEnhancer{
+		mode:     cfg.EnhancedMode,
+		fakePool: fakePool,
+		mapping:  mapping,
+	}
+}
+```
+
+[`dns/middleware.go#L221-L237 (5f1f296)`](https://github.com/MetaCubeX/mihomo/blob/5f1f296213550c34fb098e07e82e8463f6833e95/dns/middleware.go#L221-L237)
+
+```go
+func NewHandler(resolver *Resolver, mapper *ResolverEnhancer) handler {
+	middlewares := []middleware{}
+
+
+	if resolver.hosts != nil {
+		middlewares = append(middlewares, withHosts(R.NewHosts(resolver.hosts), mapper.mapping))
+	}
+
+
+	if mapper.mode == C.DNSFakeIP {
+		middlewares = append(middlewares, withFakeIP(mapper.fakePool))
+	}
+
+
+	if mapper.mode != C.DNSNormal {
+		middlewares = append(middlewares, withMapping(mapper.mapping))
+	}
+
+
+	return compose(middlewares, withResolver(resolver))
+}
+```
+
+[`tunnel/tunnel.go#L301-L330 (5f1f296)`](https://github.com/MetaCubeX/mihomo/blob/5f1f296213550c34fb098e07e82e8463f6833e95/tunnel/tunnel.go#L301-L330)
+
+```go
+func needLookupIP(metadata *C.Metadata) bool {
+	return resolver.MappingEnabled() && metadata.Host == "" && metadata.DstIP.IsValid()
+}
+
+
+func preHandleMetadata(metadata *C.Metadata) error {
+	// preprocess enhanced-mode metadata
+	if needLookupIP(metadata) {
+		host, exist := resolver.FindHostByIP(metadata.DstIP)
+		if exist {
+			metadata.Host = host
+			metadata.DNSMode = C.DNSMapping
+			if resolver.FakeIPEnabled() {
+				metadata.DstIP = netip.Addr{}
+				metadata.DNSMode = C.DNSFakeIP
+			} else if node, ok := resolver.DefaultHosts.Search(host, false); ok {
+				// redir-host should lookup the hosts
+				metadata.DstIP, _ = node.RandIP()
+			} else if node != nil && node.IsDomain {
+				metadata.Host = node.Domain
+			}
+		} else if resolver.IsFakeIP(metadata.DstIP) {
+			return fmt.Errorf("fake DNS record %s missing", metadata.DstIP)
+		}
+	} else if node, ok := resolver.DefaultHosts.Search(metadata.Host, true); ok {
+		// try use domain mapping
+		metadata.Host = node.Domain
+	}
+
+
+	return nil
+}
+```
+
+:::
+
+#### DNS 污染
+
+任何跨越中国大陆边境的 UDP 53 DNS 请求都有可能受到污染，具体可以参考[这篇文章](https://www.assetnote.io/resources/research/insecurity-through-censorship-vulnerabilities-caused-by-the-great-firewall)。因此，直接在境内解析境外站点的 IP 并作为最终目的访问是不安全的。对于所有需要通过代理出战的请求，都应当尽可能使用域名作为目的地。
+
+「虚空终端」内置的 DNS 解析器对这种情况可以特殊处理。
+
+#### 嗅探器
+
+在不使用假 IP 模式，又想使用透明代理时，可以使用嗅探器提取「应用层」数据中包含的域名信息，并用提取到的域名覆盖连接目的地。它的[配置](https://wiki.metacubex.one/config/sniff/)非常简单，只需要指定需要嗅探的协议，以及可选的触发端口。有些域名不应当被视作合法的嗅探结果，应当进行忽略，比如米家设备通常会将 TLS 的 SNI 设为 `Mijia Cloud`。
+
+```yaml
+sniffer:
+  enable: true
+  sniff:
+    TLS: {}
+    HTTP: {}
+    QUIC: {}
+  skip-domain:
+    - Mijia Cloud
+```
+
+#### DNS 配置
+
+我认为，当且仅当需要使用假 IP 模式或 `fallback-filter` 功能时，才应当启用「虚空终端」内置的 DNS 解析器。
+
+DNS 配置中有多种 DNS 解析器列表，可以先看一看[文档](https://wiki.metacubex.one/config/dns/)。其中 `fallback-filter` 功能较难理解，这里用通俗的方式解释一下。`fallback-filter` 的内容定义了什么情况下解析结果可能会被污染，默认配置是 GeoIP 归属不为 `CN` 的结果。若被判断为可能会被污染，则只会采用 `fallback` 中的 DNS 解析器给出的结果。所以文档中推荐 `fallback` 使用境外 DNS 解析器，确保结果不被污染。其实还漏了一点，应当使用加密协议进行请求。
+
+本文开始提到「虚空终端」程序中硬编码了一份默认配置，通过下面的配置可以让它先恢复为一个看起来尽可能正常的本地 DNS 解析器，也可以用于在 GUI 客户端中覆盖服务商提供的订阅配置。也可以将两个包含 `system` 的列表替换为你喜爱的 DNS 解析器列表。
+
+```yaml
+dns:
+  enable: true
+  ipv6: true
+  enhanced-mode: normal
+  default-nameserver:
+    - system
+  nameserver:
+    - system
+  fallback: [] # 按需填写
+```
