@@ -8,12 +8,6 @@
 
 ### 下载 MSYS2 基本系统
 
-> [!IMPORTANT]
->
-> 你**可以**直接按照[快速上手](https://www.msys2.org/)中的说明，使用安装程序安装 MSYS2，**但是**只能使用安装程序完成初始安装，而不能使用安装程序进行“升级”，因此会出现在 [WinGet](https://github.com/microsoft/winget-cli) 等程序包管理器中提示可以“升级”但是又没有办法“升级”的情况。
->
-> 事实上，MSYS2 是“绿色软件”，因此下面描述的安装方法基于自解压程序。
-
 下载 <https://repo.msys2.org/distrib/msys2-x86_64-latest.sfx.exe> 到安装磁盘的根目录，例如 `C:\`。如果需要放置在子目录内，需要确保路径是本地普通 NTFS 卷上的仅 ASCII 短路径。
 
 > [!TIP]
