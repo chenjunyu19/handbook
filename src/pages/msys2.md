@@ -113,13 +113,15 @@ MSYS2 默认的[终端模拟器](https://www.msys2.org/docs/terminals/)是 Mintt
                 "commandline": "C:/msys64/msys2_shell.cmd -defterm -no-start",
                 "guid": "{71160544-14d8-4194-af25-d05feeac7233}",
                 "icon": "C:/msys64/msys2.ico",
-                "name": "MSYS2 - MSYS"
+                "name": "MSYS2 - MSYS",
+                "pathTranslationStyle": "msys2"
             },
             {
                 "commandline": "C:/msys64/msys2_shell.cmd -defterm -no-start -ucrt64",
                 "guid": "{17da3cac-b318-431e-8a3e-7fcdefe6d114}",
                 "icon": "C:/msys64/ucrt64.ico",
-                "name": "MSYS2 - MinGW UCRT x64"
+                "name": "MSYS2 - MinGW UCRT x64",
+                "pathTranslationStyle": "msys2"
             }
         ]
     }
