@@ -45,11 +45,11 @@ skopeo copy docker://busybox:latest docker-daemon:busybox:latest
 
 ```shell
 export https_proxy=...
-skopeo copy docker://busybox:latest oci-archive:busybox-latest.tar
+skopeo copy docker://busybox:latest docker-archive:busybox-latest.tar:busybox:latest
 ```
 
-将目标换为 `docker-daemon:` 也是可以的。完成以后，在当前目录下应该会出现名为 `busybox-latest.tar` 的文件。随后，可以使用 `docker image import` 命令导入 Docker Daemon 存储，而无需考虑网络问题。
+完成以后，在当前目录下应该会出现名为 `busybox-latest.tar` 的文件。随后，可以使用 `docker image load` 命令导入 Docker Daemon 存储，而无需考虑网络问题。
 
 ```shell
-docker image import busybox-latest.tar busybox:latest
+docker image load -i busybox-latest.tar
 ```
