@@ -164,7 +164,7 @@ install -m644 -Dt /usr/share/glvnd usr/share/glvnd/egl_vendor.d/10_zx.json
 install -m644 -Dt /usr/share/X11/xorg.conf.d usr/share/X11/xorg.conf.d/10-zxgpu.conf
 ```
 
-需要修改最后两个配置文件为如下内容。这是通过阅读 deb 软件包的 postinst 脚本得知的。不过比较奇怪的一点是，这个 21.00.79 版的驱动软件包中没有 postinst 脚本。
+需要修改最后两个配置文件为如下内容。这是通过阅读 deb 软件包的 postinst 脚本得知的。
 
 ```json
 {
