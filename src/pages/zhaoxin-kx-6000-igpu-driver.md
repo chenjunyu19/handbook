@@ -160,7 +160,7 @@ install -Dt /usr/lib/xorg/modules/drivers usr/lib/xorg/modules/drivers/zx_drv.so
 install -Dt /usr/lib/xorg/modules/extensions usr/lib/xorg/modules/extensions/libglx_zx.so
 
 install -m644 -Dt /usr/share/drirc.d usr/share/drirc.d/01-zx_drv.conf
-install -m644 -Dt /usr/share/glvnd usr/share/glvnd/egl_vendor.d/10_zx.json
+install -m644 -Dt /usr/share/glvnd/egl_vendor.d usr/share/glvnd/egl_vendor.d/10_zx.json
 install -m644 -Dt /usr/share/X11/xorg.conf.d usr/share/X11/xorg.conf.d/10-zxgpu.conf
 ```
 
@@ -187,3 +187,5 @@ EndSection
 ## 后记
 
 如果你仔细阅读了上面的安装过程，尤其是用户态的部分，可以发现这个驱动软件包非常的奇怪。我不禁怀疑，这些软件包的作者真的有测试过他们制作的软件包吗。
+
+我已经在[我的分支](https://github.com/chenjunyu19/aosc-os-abbs/tree/zhaoxin-linux-graphics-driver-dri)上提供了这个软件包重打包为安同 OS 软件包的源码，你可以根据相关文档进行打包和安装，以便维护系统的整洁。
