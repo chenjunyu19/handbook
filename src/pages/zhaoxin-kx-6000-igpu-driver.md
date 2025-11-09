@@ -188,4 +188,4 @@ EndSection
 
 如果你仔细阅读了上面的安装过程，尤其是用户态的部分，可以发现这个驱动软件包非常的奇怪。我不禁怀疑，这些软件包的作者真的有测试过他们制作的软件包吗。
 
-我已经在[我的分支](https://github.com/chenjunyu19/aosc-os-abbs/tree/zhaoxin-linux-graphics-driver-dri)上提供了这个软件包重打包为安同 OS 软件包的源码，你可以根据相关文档进行打包和安装，以便维护系统的整洁。
+该驱动包的安同 OS 重打包版本已经合入主线。可以在 [AOSC-Dev/aosc-os-abbs](https://github.com/AOSC-Dev/aosc-os-abbs/tree/stable/runtime-display/zhaoxin-linux-graphics-driver-dri) 中获取最新的构建流程，在 [AOSC-Tracking/zx-kernel-dkms](https://github.com/AOSC-Tracking/zx-kernel-dkms) 中获取内核模块的补丁。
