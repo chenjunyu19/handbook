@@ -31,6 +31,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: 'PPPoE 宽带接入', link: '/pppoe' },
         { text: '「虚空终端」配置方法', link: '/mihomo-config' },
         { text: '兆芯 KX-6000 iGPU 驱动', link: '/zhaoxin-kx-6000-igpu-driver' },
+        { text: 'nspawn 中的 NixOS 容器', link: '/nixos-in-nspawn' },
       ]
     }
   ];
