@@ -259,6 +259,7 @@ root@archiso ~ #
 卸载文件系统并重新启动。
 
 ```shell
+systemd-umount /mnt/efi
 systemd-umount /mnt
 systemctl reboot
 ```
