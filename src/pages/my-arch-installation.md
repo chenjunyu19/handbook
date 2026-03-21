@@ -70,10 +70,9 @@ Server = https://geo.mirror.pkgbuild.com/$repo/os/$arch
 
 ### mkinitcpio
 
-编辑 `/mnt/etc/mkinitcpio.conf.d/hook-systemd-nocmdline.conf`，写入以下内容，使 mkinitcpio 默认使用基于 systemd 的初始化流程。请注意我移除了有关键盘布局和控制台的钩子，因为通常情况下它没有实用性。另外我还添加了 `_optnocmdline=1`，它等效于在运行 `mkinitcpio` 时添加 `--no-cmdline` 选项，阻止生成初始化内存盘时从当前运行的系统中收集命令行参数。这是因为基于 systemd 的初始化内存盘会自动根据分区类型等信息选择根块，添加命令行参数指定它时不必要的。如果你希望添加命令行参数，则应当移除 `_optnocmdline=1` 并按照 `mkinitcpio` 的相关文档编写配置文件。
+编辑 `/mnt/etc/mkinitcpio.conf.d/nocmdline.conf`，写入以下内容，它等效于在运行 `mkinitcpio` 时添加 `--no-cmdline` 选项，阻止生成初始化内存盘时从当前运行的系统中收集命令行参数。这是因为基于 systemd 的初始化内存盘会自动根据分区类型等信息选择根块，添加命令行参数指定它时不必要的。如果你希望添加命令行参数，则无需写入该文件，并按照 `mkinitcpio` 的相关文档编写配置文件。
 
 ```shell
-HOOKS=(base systemd autodetect microcode modconf kms block filesystems fsck)
 _optnocmdline=1
 ```
 
