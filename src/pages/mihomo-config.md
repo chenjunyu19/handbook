@@ -430,7 +430,7 @@ func preHandleMetadata(metadata *C.Metadata) error {
 
 #### DNS 污染
 
-任何跨越中国大陆边境的 UDP 53 DNS 请求都有可能受到污染，具体可以参考[这篇文章](https://www.assetnote.io/resources/research/insecurity-through-censorship-vulnerabilities-caused-by-the-great-firewall)。因此，直接在境内解析境外站点的 IP 并作为最终目的访问是不安全的。对于所有需要通过代理出战的请求，都应当尽可能使用域名作为目的地。
+任何跨越中国大陆边境的 UDP 53 DNS 请求都有可能受到污染，具体可以参考[这篇文章](https://www.assetnote.io/resources/research/insecurity-through-censorship-vulnerabilities-caused-by-the-great-firewall)。因此，直接在境内解析境外站点的 IP 并作为最终目的访问是不安全的。对于所有需要通过代理出站的请求，都应当尽可能使用域名作为目的地。
 
 「虚空终端」内置的 DNS 解析器对这种情况可以特殊处理。
 
