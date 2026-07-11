@@ -47,6 +47,7 @@ function sidebarNetwork(): DefaultTheme.SidebarItem[] {
       text: '网络',
       items: [
         { text: '概览', link: '/' },
+        { text: '你路由器上的 IPv6', link: '/ipv6-on-your-router' },
       ]
     }
   ];
