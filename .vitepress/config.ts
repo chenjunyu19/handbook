@@ -22,7 +22,8 @@ export default defineConfig({
   // https://vitepress.dev/zh/reference/default-theme-config
   themeConfig: {
     nav: [
-      { text: '页面', link: '/pages/', activeMatch: '^/pages/' }
+      { text: '页面', link: '/pages/', activeMatch: '^/pages/' },
+      { text: '网络', link: '/network/', activeMatch: '^/network/' }
     ],
     sidebar: sidebar(),
     editLink: {
