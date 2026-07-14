@@ -4,8 +4,8 @@ import sidebar from './sidebar';
 
 // https://vitepress.dev/zh/reference/site-config
 export default defineConfig({
-  title: "冒险手册",
-  description: "某只「旅行者·空」的笔记本",
+  title: '冒险手册',
+  description: '某只「旅行者·空」的笔记本',
   lang: 'zh-CN',
   srcDir: 'src',
   lastUpdated: true,
@@ -33,12 +33,18 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/chenjunyu19/handbook' }
     ],
+    search: {
+      provider: 'local',
+      options: {
+        translations: localSearchZhTranslations()
+      }
+    },
     externalLinkIcon: true,
     notFound: {
       title: '页面未找到',
       quote: '页面可能被移动或删除了，但你可以继续在本站寻找。',
       linkLabel: '前往首页',
-      linkText: '前往首页',
+      linkText: '前往首页'
     },
     ...themeConfigZhMessages()
   }
@@ -67,5 +73,29 @@ function themeConfigZhMessages(): DefaultTheme.Config {
     sidebarMenuLabel: '菜单',
     returnToTopLabel: '回到顶部',
     langMenuLabel: '多语言'
+  };
+}
+
+// https://github.com/vuejs/vitepress/blob/e558af6ca092433df057ad22710d8f6b1dd6ba37/docs/zh/reference/default-theme-search.md
+function localSearchZhTranslations(): DefaultTheme.LocalSearchOptions['translations'] {
+  return {
+    button: {
+      buttonText: '搜索',
+      buttonAriaLabel: '搜索'
+    },
+    modal: {
+      displayDetails: '显示详细列表',
+      resetButtonTitle: '重置搜索',
+      backButtonTitle: '关闭搜索',
+      noResultsText: '没有结果',
+      footer: {
+        selectText: '选择',
+        selectKeyAriaLabel: '输入',
+        navigateText: '导航',
+        navigateUpKeyAriaLabel: '上箭头',
+        navigateDownKeyAriaLabel: '下箭头',
+        closeText: '关闭'
+      }
+    }
   };
 }
