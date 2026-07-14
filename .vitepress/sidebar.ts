@@ -16,7 +16,7 @@ export default function sidebar(): DefaultTheme.Sidebar {
 function sidebarPages(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '零散页面',
+      text: '合集：零散页面',
       items: [
         { text: '概览', link: '/' },
         { text: '8051 开发环境（C51 汇编）', link: '/mcu-8051-dev-c51' },
@@ -28,11 +28,8 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
         { text: 'AVR 开发环境（GCC）', link: '/mcu-avr-dev-gcc' },
         { text: 'systemd 系统的“开机自启”', link: '/systemd-autostart' },
         { text: '我的 Arch Linux 安装', link: '/my-arch-installation' },
-        { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
         { text: '理解 UEFI 系统的引导', link: '/uefi-boot' },
-        { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
         { text: 'Arch Linux 自动系统更新', link: '/archlinux-auto-sysupgrade' },
-        { text: 'PPPoE 宽带接入', link: '/pppoe' },
         { text: '「虚空终端」配置方法', link: '/mihomo-config' },
         { text: '兆芯 KX-6000 iGPU 驱动', link: '/zhaoxin-kx-6000-igpu-driver' },
         { text: 'nspawn 中的 NixOS 容器', link: '/nixos-in-nspawn' },
@@ -44,11 +41,24 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
 function sidebarNetwork(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '网络',
+      text: '合集：网络',
       items: [
         { text: '概览', link: '/' },
         { text: '心中的网络', link: '/the-network-in-the-mind' },
+      ]
+    },
+    {
+      text: '接入与路由',
+      items: [
+        { text: 'PPPoE 宽带接入', link: '/pppoe' },
         { text: '你路由器上的 IPv6', link: '/ipv6-on-your-router' },
+      ]
+    },
+    {
+      text: '应用与排障',
+      items: [
+        { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
+        { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
       ]
     }
   ];
