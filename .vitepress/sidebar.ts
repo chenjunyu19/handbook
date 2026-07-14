@@ -59,6 +59,7 @@ function sidebarNetwork(): DefaultTheme.SidebarItem[] {
       items: [
         { text: 'Tailscale 的 netfilter 规则', link: '/tailscale-netfilter-mode' },
         { text: '多出口网络中的 DNS', link: '/dns-in-multi-wan' },
+        { text: 'DNS 的出口 IP', link: '/dns-outbound-ip' },
       ]
     }
   ];
