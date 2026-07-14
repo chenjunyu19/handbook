@@ -8,6 +8,9 @@ export default defineConfig({
   description: '某只「旅行者·空」的笔记本',
   lang: 'zh-CN',
   srcDir: 'src',
+  router: {
+    prefetchLinks: false
+  },
   lastUpdated: true,
   markdown: {
     theme: {
