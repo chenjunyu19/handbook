@@ -1,6 +1,6 @@
 import { defineConfig, type DefaultTheme } from 'vitepress';
 
-import sidebar from './sidebar';
+import sidebar from './sidebar.ts';
 
 // https://vitepress.dev/zh/reference/site-config
 export default defineConfig({
